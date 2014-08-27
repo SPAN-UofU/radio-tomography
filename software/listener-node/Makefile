@@ -58,5 +58,8 @@ main: $(OBJS)
 	$(SDCC) $(CFLAGS) -L $(SDCC_LIB_PATH)/large -o $(IHX) $(OBJS)
 	$(PACKIHX) $(IHX) > $(HEX)
 
+prog:
+	cc-tool -ew $(HEX) -v
+
 clean:
 	rm $(OBJS) $(OBJS:.rel=.asm) $(OBJS:.rel=.lst) $(OBJS:.rel=.rst) $(OBJS:.rel=.sym) *.hex *.ihx *.lk *.map *.mem

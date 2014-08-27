@@ -31,5 +31,11 @@ main: $(OBJS)
 	$(SDCC) $(CFLAGS) -L $(SDCC_LIB_PATH)/large -o $(IHX) $(OBJS)
 	$(PACKIHX) $(IHX) > $(HEX)
 
+prog:	
+	@while [ -z "$$VALUE" ]; do \
+		read -r -p "Node number: " VALUE; \
+	   done; \
+	cc-tool -ew rf-node-$$VALUE.hex -v	   
+
 clean:
 	rm $(OBJS) $(OBJS:.rel=.asm) $(OBJS:.rel=.lst) $(OBJS:.rel=.rst) $(OBJS:.rel=.sym) *.hex *.ihx *.lk *.map *.mem
