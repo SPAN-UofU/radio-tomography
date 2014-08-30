@@ -19,20 +19,20 @@
 // along with multi-Spin. If not, see <http://www.gnu.org/licenses/>.
 // 
 
-#ifndef XPAND_CHANNELS_H
-#define XPAND_CHANNELS_H
+#ifndef XPAND_SPIN_MULTICHANNEL_H
+#define XPAND_SPIN_MULTICHANNEL_H
 
-// Number of frequency channels
-#define CHANNELS_NUMBER 4
+// Number of nodes composing the sensor network
+#define MAX_NUM_NODES 2
 
-// Frequency channels
-// REMEMBER: the first channel in the arracy is the "default" channel, i.e., the
-// frequency channel all the nodes will switch back to whenever they don't hear
-// from other neighboring nodes (this avoid nodes asynchronously looping on the
-// defined frequency channels without communicating)
-//char channel_sequence[CHANNELS_NUMBER] = { 11, 15, 19, 23 };
-//char channel_sequence[CHANNELS_NUMBER] = { 12, 16, 20, 24 };
-//char channel_sequence[CHANNELS_NUMBER] = { 13, 17, 21, 25 };
-char channel_sequence[CHANNELS_NUMBER] = { 14, 18, 22, 26 };
+#define SPIN_HOLE 0x7F // 127 (max. of signed 8 bit)
+
+typedef struct {
+    unsigned int packet_counter;
+    char TX_id;
+    signed char RSS[MAX_NUM_NODES];
+    char CORR[MAX_NUM_NODES];
+    signed char TX_channel;
+} spinPacket_t;
 
 #endif

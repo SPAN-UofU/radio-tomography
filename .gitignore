@@ -1,1 +1,13 @@
 *.swp
+
+*.asm
+*.lst
+*.rel
+*.rst
+*.sym
+
+*.hex
+*.ihx
+*.lk
+*.map
+*.mem

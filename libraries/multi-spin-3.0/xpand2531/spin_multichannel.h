@@ -1,38 +1,17 @@
-// 
-// SPAN Lab (The University of Utah) and Xandem Technology Copyright 2012-2013
-// 
-// Author(s):
-// Maurizio Bocca (maurizio.bocca@utah.edu)
-// Joey Wilson (joey@xandem.com)
-// Neal Patwari (neal@xandem.com)
-// 
-// This file is part of multi-Spin.
-// multi-Spin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// multi-Spin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with multi-Spin. If not, see <http://www.gnu.org/licenses/>.
-// 
+#ifndef XPANSPIN_H
+#define XPANSPIN_H
 
-#ifndef XPAND_SPIN_MULTICHANNEL_H
-#define XPAND_SPIN_MULTICHANNEL_H
-
-// Number of nodes composing the sensor network
+//number of nodes of which the network is composed
 #define MAX_NUM_NODES 2
+#define SPIN_HOLE 0x7F //127 (max of signed 8 bit)
 
-#define SPIN_HOLE 0x7F // 127 (max. of signed 8 bit)
-
+//content of the packets transmitted by the nodes
+//the packet counter is a 16-bit counter (each packet has a unique value)
 typedef struct {
-    unsigned int packet_counter;
-    char TX_id;
-    signed char RSS[MAX_NUM_NODES];
-    char CORR[MAX_NUM_NODES];
-    signed char TX_channel;
+  unsigned int packet_counter;
+  char TX_id;
+  signed char RSS[MAX_NUM_NODES];
+  signed char TX_channel;
 } spinPacket_t;
 
 #endif

@@ -15,4 +15,7 @@ while True:
         binaryPacket = lines[-2]
         buffer = lines[-1]
         spinPacket = unpack('<Hb' + (len(binaryPacket) - 4) * 'b' + 'b', binaryPacket)
-        print(spinPacket)
+        #print(spinPacket)
+        #print str(spinPacket[2]) + " " + str(spinPacket[3])
+        if (spinPacket[2] <= -103) | (spinPacket[3] <= -103):
+            print "ERROR"

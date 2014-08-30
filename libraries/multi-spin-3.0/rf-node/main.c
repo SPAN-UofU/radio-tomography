@@ -35,9 +35,9 @@
 #include "channels.h"
 
 // RF sensor configuration
-#define THIS_NODE_ID 1
+#define THIS_NODE_ID 2
 #define ADDR 0x1234 + (THIS_NODE_ID - 1)
-#define PAN 0x2011
+#define PAN 0x2013
 
 // Length (in ticks of the clock counter) of a TDMA slot
 #define SLOT_LENGTH 7 // 1953.125Hz (1 = 512 us)
@@ -86,11 +86,11 @@ void next_TX_timeISR(void) __interrupt (12) {
     // receiving a packet from a neighboring RF sensors
     TX_counter++;
   
-    // Reset the array used to store the RSS and correlation values of the packets
+    // Reset the array used to store the RSS and elation values of the packets
     // broadcasted by the neighboring RF sensors
     for(i = 0; i < MAX_NUM_NODES; i++) {
         spinPacket.RSS[i] = SPIN_HOLE;
-        spinPacket.CORR[i] = SPIN_HOLE;
+        //spinPacket.CORR[i] = SPIN_HOLE;
     }
 }
 
@@ -134,7 +134,7 @@ void main(void) {
     spinPacket.TX_id = THIS_NODE_ID;
     for(u = 0; u < MAX_NUM_NODES; u++) {
         spinPacket.RSS[u] = SPIN_HOLE;
-        spinPacket.CORR[u] = SPIN_HOLE;
+        //spinPacket.CORR[u] = SPIN_HOLE;
     }
     spinPacket.TX_channel = channel_sequence[channel_counter];
 
@@ -199,7 +199,7 @@ void main(void) {
           
                     // Update the RSS and CORR arrays
                     spinPacket.RSS[int_TX_id - 1] = rssi;
-                    spinPacket.CORR[int_TX_id - 1] = corr;
+                    //spinPacket.CORR[int_TX_id - 1] = corr;
                     ledOff(2); // Red LED off 
                 }
             }

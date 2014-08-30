@@ -20,7 +20,7 @@ OBJS =	$(BUILDROOT)/../../libraries/multi-spin-3.0/rf-node/main.rel \
 		$(BUILDROOT)/../../libraries/multi-spin-3.0/xpand2531/rf.rel \
 		$(BUILDROOT)/../../libraries/multi-spin-3.0/xpand2531/spin_clock.rel \
 		$(BUILDROOT)/../../libraries/multi-spin-3.0/xpand2531/timers34.rel
-CFLAGS += $(INCLUDES) -DNDEBUG -Dchip=2530 --model-large --Werror --opt-code-size
+CFLAGS += $(INCLUDES) -DNDEBUG -Dchip=2531 --model-large --Werror --opt-code-size
 
 # Pattern rules
 %.rel: %.c

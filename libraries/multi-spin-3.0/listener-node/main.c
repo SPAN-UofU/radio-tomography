@@ -40,6 +40,7 @@
 // Format of the packet transferred through the serial port of the listener node
 typedef struct {
     spinPacket_t spinPacket;
+    uint8 time_stamp;
     uint16 suffix;
 } serialPacket_t;
 serialPacket_t serialPacket;
@@ -53,7 +54,7 @@ static rfConfig_t rfConfig;
 // simultaneously used to collect data)
 // #define THIS_NODE_ID 1
 #define ADDR 0x1234
-#define PAN 0x2011
+#define PAN 0x2013
 
 int counter = 0;
 signed char rssi;
