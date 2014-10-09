@@ -47,7 +47,7 @@ typedef struct {
 
 void radioInit(rfConfig_t*);
 void sendPacket(char*, short, short, short, short);
-char receivePacket(char*, char, signed char*, char*);
+char receivePacket(char*, char, signed char*, char*, char*);
 char isPacketReady(void);
 
 #endif

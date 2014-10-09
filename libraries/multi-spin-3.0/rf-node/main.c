@@ -37,7 +37,7 @@
 // RF sensor configuration
 #define THIS_NODE_ID 2
 #define ADDR 0x1234 + (THIS_NODE_ID - 1)
-#define PAN 0x2013
+#define PAN 0x2015
 
 // Length (in ticks of the clock counter) of a TDMA slot
 #define SLOT_LENGTH 7 // 1953.125Hz (1 = 512 us)
@@ -64,6 +64,8 @@ char channel;
 static int channel_counter = 0;
 static int TX_counter = 0;
 unsigned int RX_packet_counter;
+
+char rssValid;
 
 // Timer 3: frequency channel hopping
 timer34Config_t channel_hoppingConfig;
@@ -163,7 +165,7 @@ void main(void) {
     timer4Start();
     while(1) {
         if(isPacketReady()) {
-            if(receivePacket((char*)&receivedPacket, sizeof(spinPacket), &rssi, &corr) == sizeof(spinPacket)) {
+            if(receivePacket((char*)&receivedPacket, sizeof(spinPacket), &rssi, &corr, &rssValid) == sizeof(spinPacket)) {
                 timer4Stop();
                 timer3Stop();
         
@@ -198,7 +200,10 @@ void main(void) {
                     timer4Start();
           
                     // Update the RSS and CORR arrays
-                    spinPacket.RSS[int_TX_id - 1] = rssi;
+                    if(rssValid)
+                        spinPacket.RSS[int_TX_id - 1] = rssi; 
+                    else
+                        spinPacket.RSS[int_TX_id - 1] = SPIN_HOLE; 
                     //spinPacket.CORR[int_TX_id - 1] = corr;
                     ledOff(2); // Red LED off 
                 }

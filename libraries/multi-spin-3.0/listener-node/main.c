@@ -54,7 +54,7 @@ static rfConfig_t rfConfig;
 // simultaneously used to collect data)
 // #define THIS_NODE_ID 1
 #define ADDR 0x1234
-#define PAN 0x2013
+#define PAN 0x2015
 
 int counter = 0;
 signed char rssi;
@@ -66,6 +66,8 @@ char channel;
 static int channel_counter = 0;
 int next_channel_time;
 int next_reset_radio_time = (MAX_NUM_NODES + 3) * SLOT_LENGTH;
+
+char rssValid;
 
 // Timer 3: frequency channel hopping
 timer34Config_t channel_hoppingConfig;
@@ -138,7 +140,7 @@ void main(void) {
     while(1) {
         HAL_PROCESS();
         if(isPacketReady()) {
-            if(receivePacket((char*)&rxPacket, sizeof(rxPacket), &rssi, &corr) == sizeof(rxPacket)) {
+            if(receivePacket((char*)&rxPacket, sizeof(rxPacket), &rssi, &corr, &rssValid) == sizeof(rxPacket)) {
       	        ledOn(2); // Red LED on
                 ledOff(1); // Green LED off
 

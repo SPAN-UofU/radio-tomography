@@ -132,7 +132,7 @@ void sendPacket(char* ptr, short len, short pan, short dest, short src) {
     RFST = ISRXON;
 }
 
-char receivePacket(char* ptr, char len, signed char* rssi, char* corr) {
+char receivePacket(char* ptr, char len, signed char* rssi, char* corr, char* valid) {
     char i;
 
     // Clear RX flags
@@ -161,6 +161,7 @@ char receivePacket(char* ptr, char len, signed char* rssi, char* corr) {
         }
         
         // Read the RSSI byte
+        *valid = RSSISTAT; 
         *rssi = RFD + RSSI_OFFSET;
         
         // Check CRC
