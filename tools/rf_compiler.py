@@ -9,6 +9,24 @@ if len(sys.argv) == 1:
     os._exit(1)
 
 numNodes = int(sys.argv[1])
+
+lines = []
+# Find and replace the amount of node line
+file = open('../libraries/multi-spin-3.0/xpand2531/spin_multichannel.h')
+for line in file:
+    found = re.search('#define MAX_NUM_NODES (\d+)', line)
+    if found:
+        lines.append('#define MAX_NUM_NODES ' + str(numNodes) + '\n')
+    else:
+        lines.append(line)
+file.close()
+
+# Write the file with updated THIS_NODE_ID
+file = open('../libraries/multi-spin-3.0/xpand2531/spin_multichannel.h', 'w')
+for line in lines:
+    file.write(line)
+file.close()
+
 nodeId = 1
 os.chdir('../software/rf-node')
 call(['make', 'clean'])
@@ -16,7 +34,7 @@ os.chdir('../')
 
 while nodeId <= numNodes:
     lines = []
-    
+
     # Find and replace the THIS_NODE_ID line
     file = open('../libraries/multi-spin-3.0/rf-node/main.c')
     for line in file:
