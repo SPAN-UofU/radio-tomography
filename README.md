@@ -22,6 +22,9 @@ In order to be able to use the toolchain, you must install the following softwar
 
 For all commands in this file, replace `python` by `python2` if your operating system uses that to distinguish between Python 2.x and Python 3.x and replace `vim` by any other code editor you might be using.
 
+Configuring cc-tools
+
+
 Compiling the software
 ======================
 
@@ -32,6 +35,20 @@ We hereby release multi-Spin 3.0. The changelog for version 3.0 in comparison wi
 - Full support has been added for the open source SDCC compiler (you cannot compile with the commercial tool IAR Embedded Workbench anymore).
 - Correlation values are implemented into Spin packets.
 - Spin clock code has been rewritten and the code style has been made consistent.
+
+In order to be able to flash the HEX files onto the nodes later on, we must first compile cc-tool. Note that compiling from source is necessary because the software has been patched for usage with the CC2530 nodes. Run the following commands to compile cc-tool.
+
+Linux:
+    $ cd tools/cc-tool
+
+MacOS:
+    $ git clone https://github.com/SPAN-UofU/cc-tool.git
+    $ cd cc-tool
+
+then:
+    $ ./configure
+    $ make
+    $ make install
 
 Channels
 --------
