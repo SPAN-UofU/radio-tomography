@@ -1,5 +1,7 @@
 This repository contains the open source radio tomography software toolchain for usage with the Texas Instruments CC2530 SoC. The toolchain is developed by researchers from Leiden University and CWI Amsterdam and contains software from Texas Instruments and the University of Utah amongst others. Please refer to the references section below for an extensive list of sources.
 
+This is a branch off of the CWI Amsterdam repo.
+
 Prerequisites
 =============
 
@@ -20,14 +22,6 @@ In order to be able to use the toolchain, you must install the following softwar
 
 For all commands in this file, replace `python` by `python2` if your operating system uses that to distinguish between Python 2.x and Python 3.x and replace `vim` by any other code editor you might be using.
 
-Cloning the repository
-======================
-
-The first step is to clone the repository to obtian a local copy of the code. Open a terminal window and run the following commands.
-
-    $ git clone https://github.com/timvandermeij/radio-tomography.git
-    $ cd radio-tomography
-
 Compiling the software
 ======================
 
@@ -39,44 +33,40 @@ We hereby release multi-Spin 3.0. The changelog for version 3.0 in comparison wi
 - Correlation values are implemented into Spin packets.
 - Spin clock code has been rewritten and the code style has been made consistent.
 
-In order to be able to flash the HEX files onto the nodes later on, we must first compile `cc-tool`. Note that compiling from source is necessary because the software has been patched for usage with the CC2530 nodes. Run the following commands to compile `cc-tool`.
-
-    $ cd tools/cc-tool
-    $ ./configure
-    $ make
-
-You will end up with an executable named `cc-tool`. It is recommended to add this executable to your PATH variables so you can use it everywhere. For the next steps, we will assume that you have done this.
-
-Listener node
--------------
-
-Before compiling the listener node software, you must update the number of RF nodes in your sensor network. You can do this as follows:
-
-    $ cd ../../libraries/multi-spin-3.0/xpand2531
-    $ vim spin_multichannel.h
-
-In this file, set `MAX_NUM_NODES` to the number of RF nodes in the sensor network. After that, update the number of channels to use. You can do this as follows:
-
-    $ vim channels.h
-
-In this file, set `CHANNELS_NUMBER` to the number of channels that you wish to use. Do not forget to update the channels array a few lines below `CHANNELS_NUMBER`. Make sure that the channels array starts with the channel that you want to use as default channel.
-
-Once you have done all this, run the following commands to compile the listener node software.
-    
-    $ cd ../../../software/listener-node
-    $ make
-
-The result of `make` is (amongst others) an Intel HEX file named `listener-node.hex` that contains the compiled code.
-
-RF nodes
+Channels
 --------
 
-The changes made for the listener node are also used for the RF nodes. However, because each RF node has a unique identifier, the HEX files for each RF node must be compiled separately. Since this can be a tedious task, we have provided build automation for this. Run the following commands to automatically generate all RF node HEX files (change `MAX_NUM_NODES` to the number of nodes in your sensor network):
+The listen node(s) and RF nodes must agree on which channels to communicate on. You can edit the channel list by editting the file "channels.h" under the following directory:
 
-    $ cd ../../tools
-    $ python rf_compiler.py MAX_NUM_NODES
+    $ cd ~/path/to/radio-tomography/libraries/multi-spin-3.0/xpand2531
 
-You will end up with `MAX_NUM_NODES` Intel HEX files that can be flashed onto the hardware chips.
+Edit the number of channels macro and the channel sequence array. Channels 11 - 26 are available to use. Save the file after updating.
+
+USB Dongles or CC2530
+---------------------
+
+The USB Dongles use the CC2531 chip whereas the boards with the SMA connector use the CC2530. Open the file "Makefile" under the following directory
+
+    $ cd ~/path/to/radio-tomography/software/rf-node/
+
+To program the USB dongles, give -Dchip the value 2531 as shown below.
+
+    CFLAGS += $(INCLUDES) -DNDEBUG -Dchip=2531 --model-large --Werror --opt-code-size
+
+To program the CC2530s, give -Dchip the value 2530 as shown below.
+
+    CFLAGS += $(INCLUDES) -DNDEBUG -Dchip=2530 --model-large --Werror --opt-code-size
+
+
+Listener and RF node
+--------------------
+
+Before compiling the listener and RF node software, you must update the number of RF nodes in your sensor network. You can do this as follows:
+
+    $ cd ~/path/to/radio-tomography
+    $ make
+
+Then enter the number of nodes in the sensor network. Listener nodes do not count toward this number.
 
 Flashing the software
 =====================
@@ -86,22 +76,22 @@ The next step is to flash the Intel HEX files onto the USB dongle or the RF node
 Listener node
 -------------
 
-To flash the listener node, connect the USB dongle and the SmartRF board to the computer using the steps outlined in the CC2530 user manual. If the devices are properly connected, run the following commands.
+To flash the listener node, supply power to the USB dongle and connect the CCdebugger to the computer. Use the ribbon cable to connect the CCdebugger to the listener node and press the Reset button on the CCdebugger. The light should be green. If the devices are properly connected, run the following commands.
 
-    $ cd ../software/listener-node
-    $ sudo cc-tool -ew listener-node.hex -v
+    $ cd ~/path/to/radio-tomography/software/listener-node/
+    $ sudo make prog
 
-Once the process is complete, the listener node is flashed.
+Once the process is complete, the listener node is flashed. Repeat this process if you want multiple listener nodes
 
 RF nodes
 --------
 
-To flash the RF nodes, connect the SmartRF board to the computer and the RF node to the SmartRF board using the steps outlined in the CC2530 user manual. If the devices are properly connected, run the following commands (assuming we flash node 8):
+To flash the listener node, supply power to the USB dongle that will be "Node 1" and connect the CCdebugger to the computer. Use the ribbon cable to connect the CCdebugger to Node 1 and press the Reset button on the CCdebugger. The light should be green. If the devices are properly connected, run the following commands.
 
-    $ cd ../rf-node
-    $ sudo cc-tool -ew rf-node-8.hex -v
+    $ cd ~/path/to/radio-tomography/software/rf-node/
+    $ sudo make prog
 
-Once the process is complete, one RF node (node 8 in our case) is flashed. Repeat this process for all RF nodes in the sensor network.
+Enter the number "1" for node 1. Once the process is complete, Node 1 has been flashed. Repeat this process for nodes 2 through N, replacing "1" with the current node number.
 
 Tools
 =====
