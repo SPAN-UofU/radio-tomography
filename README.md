@@ -39,13 +39,16 @@ We hereby release multi-Spin 3.0. The changelog for version 3.0 in comparison wi
 In order to be able to flash the HEX files onto the nodes later on, we must first compile cc-tool. Note that compiling from source is necessary because the software has been patched for usage with the CC2530 nodes. Run the following commands to compile cc-tool.
 
 Linux:
+
     $ cd tools/cc-tool
 
 MacOS:
+
     $ git clone https://github.com/SPAN-UofU/cc-tool.git
     $ cd cc-tool
 
 then:
+
     $ ./configure
     $ make
     $ make install
