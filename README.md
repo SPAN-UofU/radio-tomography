@@ -48,10 +48,14 @@ MacOS:
     $ cd cc-tool
 
 then:
+if using g++5 or greater,
+
+    $ export CPPFLAGS="-P"
+then:
 
     $ ./configure
     $ make
-    $ make install
+    $ sudo make install
 
 Channels
 --------
