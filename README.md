@@ -9,6 +9,7 @@ In order to be able to use the toolchain, you must install the following softwar
 
 * Git 1.9.0 (other versions might also work)
 * SDCC 3.3.0 (other versions might also work)
+    * https://sourceforge.net/projects/sdcc/files/sdcc-linux-x86/3.3.0/
 * Python 2.7 with the following packages (package names may differ per operating system):
     * `python2-pyserial`
     * `python2-pyqt4`
